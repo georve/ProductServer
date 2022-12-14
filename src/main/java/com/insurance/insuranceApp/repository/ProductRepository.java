@@ -21,8 +21,8 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     @Query(value="SELECT p from Product p WHERE p.level =:levelNumber")
     List<Product> findProductByLevel(@Param("levelNumber")Integer levelNumber);
-    @Query(value="SELECT p.name from Product p where p.Id=:Id")
-    String findKeyword(@Param("id") Integer Id);
-    @Query(value="SELECT p.level from Product p where p.Id=:Id")
-    Integer getLevel(@Param("id") Integer Id);
+    @Query(value="SELECT p.name from Product p where p.Id=:id")
+    String findKeyword(@Param("id") Integer id);
+    @Query(value="SELECT p.level from Product p where p.Id=:id")
+    Integer getLevel(@Param("id") Integer id);
 }

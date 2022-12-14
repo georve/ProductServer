@@ -3,6 +3,7 @@ package com.insurance.insuranceApp.controller;
 import com.insurance.insuranceApp.dto.ProductDto;
 import com.insurance.insuranceApp.model.Product;
 import com.insurance.insuranceApp.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.*;
@@ -29,11 +30,11 @@ public class ProductController {
     @Autowired
     private ProductRepository service;
 
-    @GetMapping()
-    public ResponseEntity<List<Product>> getAllStatistic() throws Exception{
 
-        List<Product> list=service.findAll();
-        return ResponseEntity.ok(list);
+    @GetMapping()
+    public ResponseEntity<List<ProductDto>> getAllStatistic() throws Exception{
+        List<ProductDto> productDtoList=service.findAll().stream().map(mapToPersonDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(productDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/{name}")
@@ -83,6 +84,9 @@ public class ProductController {
 
     private Function<Product, Set<ProductDto>> products = person -> person.getParent().getChildren().stream()
             .map(p -> ProductDto.builder().id(p.getId()).name(p.getName()).level(p.getLevel()).build()).collect(Collectors.toSet());
+
+    private Function<List<Product>,List<ProductDto>> productsLitToDto= products1 -> products1.stream()
+            .map(p->ProductDto.builder().id(p.getId()).name(p.getName()).level(p.getLevel()).parent(p.getParent()).build()).collect(Collectors.toList());
 
     private Function<Product, Set<ProductDto>> findSiblings = person -> person.getParent().getChildren().stream()
             .map(p -> ProductDto.builder().id(p.getId()).name(p.getName()).level(p.getLevel()).build()).collect(Collectors.toSet());

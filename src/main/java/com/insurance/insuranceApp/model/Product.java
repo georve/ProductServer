@@ -48,8 +48,8 @@ public class Product {
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY,optional=false)
-    @JoinColumn(name = "parentid",nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "parentid")
     private Product parent;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "parent")
